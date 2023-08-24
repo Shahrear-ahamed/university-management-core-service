@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import { AcademicSemesterFilterableFields } from './academicSemester.constants';
 import { academicSemesterService } from './academicSemester.service';
 // Your controller code here
 
@@ -24,13 +25,7 @@ const createAcademicSemester = catchAsync(
 
 const getAllAcademicSemesters = catchAsync(
   async (req: Request, res: Response) => {
-    const filters = pick(req.query, [
-      'searchTerm',
-      'startMonth',
-      'endMonth',
-      'code',
-      'title',
-    ]);
+    const filters = pick(req.query, AcademicSemesterFilterableFields);
     const pagination = pick(req.query, [
       'limit',
       'page',
@@ -53,7 +48,23 @@ const getAllAcademicSemesters = catchAsync(
   },
 );
 
+const getAcademicSemesterById = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await academicSemesterService.getAcademicSemesterById(id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Academic Semester fetched successfully',
+      data: result,
+    });
+  },
+);
+
 export const academicSemesterController = {
   createAcademicSemester,
   getAllAcademicSemesters,
+  getAcademicSemesterById,
 };

@@ -1,11 +1,10 @@
-import { AcademicSemester, Prisma, PrismaClient } from '@prisma/client';
+import { AcademicSemester, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { academicSemesterFilterableFields } from './academicSemester.constants';
+import prisma from '../../../shared/prisma';
+import { AcademicSemesterSearchableFields } from './academicSemester.constants';
 import { IAcademicSemesterFilterRequest } from './academicSemester.interfaces';
-
-const prisma = new PrismaClient();
 
 const createAcademicSemester = async (
   payload: AcademicSemester,
@@ -27,7 +26,7 @@ const getAllAcademicSemesters = async (
   // search
   if (searchTerm) {
     andCondition.push({
-      OR: academicSemesterFilterableFields.map(filter => ({
+      OR: AcademicSemesterSearchableFields.map(filter => ({
         [filter]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -54,6 +53,14 @@ const getAllAcademicSemesters = async (
     where: whereCondition,
     skip,
     take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? {
+            [options.sortBy]: options.sortOrder,
+          }
+        : {
+            createdAt: 'desc',
+          },
   });
 
   // total count
@@ -69,7 +76,18 @@ const getAllAcademicSemesters = async (
   };
 };
 
+const getAcademicSemesterById = async (
+  id: string,
+): Promise<AcademicSemester | null> => {
+  return await prisma.academicSemester.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 export const academicSemesterService = {
   createAcademicSemester,
   getAllAcademicSemesters,
+  getAcademicSemesterById,
 };
