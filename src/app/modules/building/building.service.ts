@@ -62,7 +62,38 @@ const getAllBuildings = async (
   };
 };
 
+const getByIdFromDB = async (id: string): Promise<Building | null> => {
+  return await prisma.building.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
+const updateOneInDB = async (
+  id: string,
+  payload: Partial<Building>,
+): Promise<Building> => {
+  return await prisma.building.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+};
+
+const deleteByIdFromDB = async (id: string): Promise<Building> => {
+  return await prisma.building.delete({
+    where: {
+      id,
+    },
+  });
+};
+
 export const BuildingService = {
   createBuilding,
   getAllBuildings,
+  getByIdFromDB,
+  updateOneInDB,
+  deleteByIdFromDB,
 };
