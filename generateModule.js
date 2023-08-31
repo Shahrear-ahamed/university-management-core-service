@@ -10,7 +10,7 @@ if (process.argv.length < 3) {
 // Get folder and file names from command-line arguments
 const folderName = process.argv[2];
 const fileName = process.argv[3] || folderName;
-const firstFileName = fileName.charAt(0).toUpperCase() + fileName.slice(1)
+const firstFileName = fileName.charAt(0).toUpperCase() + fileName.slice(1);
 
 // Define the target directory
 const targetDirectory = path.join(

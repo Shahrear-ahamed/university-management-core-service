@@ -5,9 +5,9 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
 import {
-    roomRelationalFields,
-    roomRelationalFieldsMapper,
-    roomSearchableFields,
+  roomRelationalFields,
+  roomRelationalFieldsMapper,
+  roomSearchableFields,
 } from './room.constants';
 import { IRoomFilterRequest } from './room.interfaces';
 
